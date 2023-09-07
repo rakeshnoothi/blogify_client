@@ -6,13 +6,11 @@ import AuthContextProvider from "./context/AuthContextProvider.jsx";
 const App = () => {
     console.log("rendered from app");
     return (
-        <div className="px-4">
+        <div className="space-y-4 px-2 lg:px-8">
             <AuthContextProvider>
-                <div>
-                    <Header />
-                    <Outlet />
-                    <Footer />
-                </div>
+                <Header />
+                <Outlet />
+                <Footer />
             </AuthContextProvider>
         </div>
     );
