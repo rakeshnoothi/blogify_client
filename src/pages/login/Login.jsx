@@ -9,6 +9,9 @@ const Login = () => {
         setIsAuthorized(true);
         navigate("/");
     };
-    return <button onClick={() => loginUser()}>Login</button>;
+    return <div className="h-full">k</div>;
 };
 export default Login;
+{
+    /* <button onClick={() => loginUser()}>Login</button>; */
+}

@@ -1,5 +1,6 @@
 import BlogPost from "./BlogPost";
 import CategoryButton from "./CategoryButton";
+import MostPopularBlog from "./MostPopularBlog";
 
 const buttonDisplayNames = ["Adventure", "Nature", "Sci-Fi", "Mythology"];
 const posts = [1, 2, 3, 4, 5, 6];
@@ -27,11 +28,12 @@ const CategoryBlogSection = () => {
                         return <BlogPost key={post} />;
                     })}
                 </div>
-                <div className="hidden lg:block bg-orange-200 max-w-[551px] h-fit">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. A,
-                    adipisci expedita pariatur facere voluptatem odio culpa,
-                    voluptate exercitationem unde quibusdam minus quas alias
-                    dolore, quaerat sit tenetur ut ducimus temporibus!
+                {/* most popular section */}
+                <div className="hidden lg:block max-w-[551px] h-fit space-y-4 p-2 sticky top-[66px]">
+                    <span className="font-bold text-xl block">
+                        Most Popular
+                    </span>
+                    <MostPopularBlog />
                 </div>
             </div>
         </div>

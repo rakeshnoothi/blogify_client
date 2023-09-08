@@ -22,7 +22,7 @@ const Header = () => {
         return navigate("/");
     };
     return (
-        <header className="py-4 sticky top-0 bg-white flex justify-between">
+        <header className="p-4 sticky top-0 bg-white flex justify-between z-50">
             <Link
                 to="/"
                 className="font=bold text-lg text-orange-600 font-bold"
