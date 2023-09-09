@@ -12,6 +12,7 @@ import Write from "../pages/write/Write";
 import Profile from "../pages/profile/Profile";
 import Login from "../pages/login/Login";
 import App from "../App";
+import Register from "../pages/register/Register";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
                 element={<ProtectedRoute element={<Profile />} />}
             />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
         </Route>
     )
 );
