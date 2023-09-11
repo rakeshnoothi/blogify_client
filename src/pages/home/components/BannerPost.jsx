@@ -1,9 +1,10 @@
 const BannerPost = () => {
+    // https://images.unsplash.com/photo-1645943020355-305df166473d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80
     return (
         <div className="max-h-max py-4 flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:h-80 lg:p-4">
-            <div className="w-[340px] bg-red-400 mx-auto lg:w-[488.64px]">
+            <div className="w-[340px] h-[287px] bg-red-400 mx-auto lg:w-[488.64px]">
                 <img
-                    src="https://images.unsplash.com/photo-1645943020355-305df166473d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80"
+                    src=""
                     alt="banner image"
                     className="h-full w-full object-cover"
                 />

@@ -19,7 +19,7 @@ const useFetch = config => {
 
     useEffect(() => {
         if (config) {
-            fetchData();
+            fetchData(config);
         }
     }, []);
 

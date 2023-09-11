@@ -7,14 +7,12 @@ const Header = () => {
 
     const validateComponent = element => {
         //If user is authorized show write and profile tabs on the header.
-        console.log("from validate componetn", isAuthorized);
         if (isAuthorized) return element;
         return false;
     };
 
     //Handle login and logout button page redirection
     const handleAuthorization = innerText => {
-        console.log(innerText);
         if (innerText === "Login") {
             return navigate("/login");
         }

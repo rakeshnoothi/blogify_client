@@ -1,8 +1,8 @@
 const BlogPost = ({ postData }) => {
     const { createdAt, title, overview, imageUrl } = postData;
     return (
-        <div className="h-[700px] w-[341px] max-w-[904px] md:min-w-[653px] p-2 flex flex-col space-y-2 box-shadow md:flex-row md:w-full md:h-80 md:space-x-2">
-            <div className="min-w-[18rem] bg-red-500">
+        <div className="h-[700px]  p-2 flex flex-col space-y-2 box-shadow md:flex-row  md:h-80 md:space-x-2">
+            <div className="min-w-[18rem] h-[325px] md:max-h-[304px] bg-red-500">
                 <img
                     src={`http://localhost:1337${imageUrl}`}
                     alt="banner image"
@@ -11,7 +11,7 @@ const BlogPost = ({ postData }) => {
             </div>
             <div className="grow space-y-6 flex flex-col justify-center">
                 <div className="space-y-2">
-                    <div>{createdAt}</div>
+                    <div className="text-orange-600">{createdAt}</div>
                     <div className="font-bold">{title}</div>
                     <div className=" overflow-hidden max-h-[120px]">
                         <p className="text-ellipsis">{overview}</p>

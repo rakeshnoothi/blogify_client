@@ -14,17 +14,14 @@ axiosInstance.interceptors.request.use(config => {
     ) {
         config.headers = { Authorization: `bearer ${jwt}` };
     }
-    console.log("config request", config);
     return config;
 });
 
 axiosInstance.interceptors.response.use(
     response => {
-        console.log("from axios instance response", response);
         return response;
     },
     async error => {
-        console.log("from axios instance error", error);
         return Promise.reject(error);
     }
 );
