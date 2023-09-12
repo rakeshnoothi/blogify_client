@@ -1,5 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 const BlogPost = ({ postData }) => {
     const { createdAt, title, overview, imageUrl } = postData;
+    const navigate = useNavigate();
+    const redirectToReadingPage = () => {
+        navigate(`/read/${postData.id}`);
+    };
+
     return (
         <div className="h-[700px]  p-2 flex flex-col space-y-2 box-shadow md:flex-row  md:h-80 md:space-x-2">
             <div className="min-w-[18rem] h-[325px] md:max-h-[304px] bg-red-500">
@@ -17,7 +24,10 @@ const BlogPost = ({ postData }) => {
                         <p className="text-ellipsis">{overview}</p>
                     </div>
                 </div>
-                <button className="p-2 border border-black rounded-md md:w-32 hover:bg-orange-600 hover:text-white">
+                <button
+                    className="p-2 border border-black rounded-md md:w-32 hover:bg-orange-600 hover:text-white"
+                    onClick={() => redirectToReadingPage()}
+                >
                     Read More
                 </button>
             </div>

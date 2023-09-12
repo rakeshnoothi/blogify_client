@@ -1,9 +1,11 @@
+import formatDate from "./dateFormat";
+
 const makePostModel = post => {
-    const regex = /\d{4}-\d{2}-\d{2}/gm;
     const postData = post.attributes;
     const formattedPostModel = {
         id: post.id,
-        createdAt: postData.createdAt.match(regex),
+        postedBy: post.posted_by,
+        createdAt: formatDate(postData.createdAt),
         title: postData.title,
         overview: postData.overview,
         content: postData.content,

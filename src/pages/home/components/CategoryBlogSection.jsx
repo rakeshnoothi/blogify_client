@@ -2,44 +2,24 @@ import BlogPost from "./BlogPost";
 import CategoryButton from "./CategoryButton";
 import MostPopularBlog from "./MostPopularBlog";
 import useBlogsDataContext from "../../../hooks/useBlogsDataContext";
-import makePostModel from "../../../utils/makePostModel";
 import { useRef } from "react";
 
 const buttonDisplayNames = ["Tech", "Food", "Travel", "Gaming"];
 
 const CategoryBlogSection = () => {
-    const { blogPosts } = useBlogsDataContext();
+    const { categoryBlogs } = useBlogsDataContext();
     const { topLikedBlogs } = useBlogsDataContext();
     const activeCategory = useRef(null);
 
-    const formattedTopLikedBlogs =
-        topLikedBlogs.fetchedTopLikedBlogsData &&
-        topLikedBlogs.fetchedTopLikedBlogsData.data.map(post => {
-            return makePostModel(post);
-        });
-
-    //If fetchedPosts is not null call makePostModel function on every element to format every post.
-    const formattedCategoryPosts =
-        blogPosts.fetchedCategoryPostsData &&
-        blogPosts.fetchedCategoryPostsData.data[0].attributes.posts.data.map(
-            post => {
-                return makePostModel(post);
-            }
-        );
-
     const fetchCategoryPosts = category => {
         //return if clicked on the same category button again.
-        if (
-            blogPosts.fetchedCategoryPostsData?.data[0].attributes.category ===
-            category
-        )
-            return;
+        if (activeCategory.current === category) return;
         activeCategory.current = category;
         const config = {
             method: "get",
             url: `/categories/?filters[category]=${category}&populate[posts][populate][image]=true`,
         };
-        return blogPosts.fetchData(config);
+        return categoryBlogs.fetchData(config);
     };
 
     return (
@@ -58,11 +38,11 @@ const CategoryBlogSection = () => {
             </div>
             <div className="flex justify-center space-x-4">
                 <div className="space-y-4 w-[341px] max-w-[904px] md:min-w-[653px] md:w-full">
-                    {blogPosts.blogPostsIsLoading ? (
+                    {categoryBlogs.blogPostsIsLoading ? (
                         <div>Loading Posts....</div>
                     ) : (
-                        formattedCategoryPosts &&
-                        formattedCategoryPosts.map(post => {
+                        categoryBlogs.formattedCategoryBlogs &&
+                        categoryBlogs.formattedCategoryBlogs.map(post => {
                             return <BlogPost key={post.id} postData={post} />;
                         })
                     )}
@@ -75,8 +55,8 @@ const CategoryBlogSection = () => {
                     {topLikedBlogs.topLikedBlogsIsLoadingg ? (
                         <div>Loading posts....</div>
                     ) : (
-                        formattedTopLikedBlogs &&
-                        formattedTopLikedBlogs.map(post => {
+                        topLikedBlogs.formattedTopLikedBlogs &&
+                        topLikedBlogs.formattedTopLikedBlogs.map(post => {
                             return (
                                 <MostPopularBlog
                                     postData={post}

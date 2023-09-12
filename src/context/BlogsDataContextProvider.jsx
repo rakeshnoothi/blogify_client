@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import useFetch from "../hooks/useFetch";
+import makePostModel from "../utils/makePostModel";
 
 export const BlogsDataContext = createContext();
 const mostPopularBlogsConfig = {
@@ -9,28 +10,41 @@ const mostPopularBlogsConfig = {
 
 const BlogsContextProvider = ({ children }) => {
     const {
-        data: fetchedCategoryPostsData,
+        data: fetchedCategoryBlogsData,
         isLoading: blogPostsIsloading,
         fetchData,
     } = useFetch();
+
     const {
         data: fetchedTopLikedBlogsData,
         isLoading: topLikedBlogsIsLoading,
     } = useFetch(mostPopularBlogsConfig);
 
-    const blogPosts = {
-        fetchedCategoryPostsData,
+    const formattedTopLikedBlogs =
+        fetchedTopLikedBlogsData &&
+        fetchedTopLikedBlogsData.data.map(post => {
+            return makePostModel(post);
+        });
+
+    const formattedCategoryBlogs =
+        fetchedCategoryBlogsData &&
+        fetchedCategoryBlogsData.data[0].attributes.posts.data.map(post => {
+            return makePostModel(post);
+        });
+
+    const categoryBlogs = {
+        formattedCategoryBlogs,
         blogPostsIsloading,
         fetchData,
     };
 
     const topLikedBlogs = {
-        fetchedTopLikedBlogsData,
+        formattedTopLikedBlogs,
         topLikedBlogsIsLoading,
     };
 
     const contextValue = {
-        blogPosts,
+        categoryBlogs,
         topLikedBlogs,
     };
 
