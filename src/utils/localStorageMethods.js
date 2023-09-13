@@ -1,7 +1,7 @@
 const localStorageMethods = {
-    getJwt: () => localStorage.getItem("jwt") || null,
-    setJwt: value => localStorage.setItem("jwt", value),
-    clearJwt: () => localStorage.clear(),
+    getUser: () => localStorage.getItem("user") || null,
+    setUser: value => localStorage.setItem("user", value),
+    clearUser: () => localStorage.clear(),
 };
 
 export default localStorageMethods;

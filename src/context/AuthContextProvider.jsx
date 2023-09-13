@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import localStorageMethods from "../utils/localStorageMethods";
 import axiosInstance from "../utils/api/axiosInstance";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,7 @@ import validateRegisterationForm from "../utils/formValidation";
 export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
-    const [isAuthorized, setIsAuthorized] = useState(false);
-    const [userInfo, setUserInfo] = useState(null);
+    const [user, setUser] = useState("");
     const navigate = useNavigate();
 
     const loginUser = async (e, userLoginInfo) => {
@@ -18,9 +17,8 @@ const AuthContextProvider = ({ children }) => {
                 identifier: userLoginInfo.userName,
                 password: userLoginInfo.password,
             });
-            localStorageMethods.setJwt(response.data.jwt);
-            setUserInfo(response.data.user);
-            setIsAuthorized(true);
+            localStorageMethods.setUser(JSON.stringify(response.data));
+            setUser(response.data);
             navigate("/");
         } catch (error) {
             console.log("from catch", error);
@@ -28,9 +26,8 @@ const AuthContextProvider = ({ children }) => {
     };
 
     const logoutUser = () => {
-        localStorageMethods.clearJwt();
-        setUserInfo(null);
-        setIsAuthorized(false);
+        localStorageMethods.clearUser();
+        setUser("");
         return navigate("/");
     };
 
@@ -52,8 +49,7 @@ const AuthContextProvider = ({ children }) => {
                 password: registerationData.password,
             });
             localStorageMethods.setJwt(response.data.jwt);
-            setUserInfo(response.data.user);
-            setIsAuthorized(true);
+            setUser(response.data);
             navigate("/");
             return;
         } catch (error) {
@@ -61,10 +57,16 @@ const AuthContextProvider = ({ children }) => {
         }
     };
 
+    useEffect(() => {
+        const IsLoggedIn = localStorageMethods.getUser();
+        if (IsLoggedIn) {
+            const foundUser = JSON.parse(IsLoggedIn);
+            setUser(foundUser);
+        }
+    }, []);
+
     const contextValue = {
-        isAuthorized,
-        setIsAuthorized,
-        userInfo,
+        user,
         loginUser,
         logoutUser,
         registerNewUser,

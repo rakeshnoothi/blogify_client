@@ -2,9 +2,9 @@ import { Navigate } from "react-router-dom";
 import useAuthContext from "../hooks/useAuthContext";
 
 const ProtectedRoute = ({ element }) => {
-    const { isAuthorized } = useAuthContext();
-    console.log(isAuthorized);
-    if (isAuthorized) {
+    const { user } = useAuthContext();
+    console.log(user);
+    if (user) {
         return element;
     }
     return <Navigate to="/" />;

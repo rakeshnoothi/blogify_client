@@ -6,24 +6,17 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(config => {
-    const jwt = localStorageMethods.getJwt();
+    const user = JSON.parse(localStorageMethods.getUser());
     if (
         config.url !== "/auth/local" &&
         config.url !== "/auth/local/register" &&
-        jwt
+        user?.jwt
     ) {
-        config.headers = { Authorization: `bearer ${jwt}` };
+        console.log("authenticated request");
+        config.headers = { Authorization: `bearer ${user.jwt}` };
+        return config;
     }
+    console.log("unauthenticated request");
     return config;
 });
-
-axiosInstance.interceptors.response.use(
-    response => {
-        return response;
-    },
-    async error => {
-        return Promise.reject(error);
-    }
-);
-
 export default axiosInstance;

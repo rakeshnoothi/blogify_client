@@ -2,12 +2,12 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 
 const Header = () => {
-    const { isAuthorized, logoutUser } = useAuthContext();
+    const { user, logoutUser } = useAuthContext();
     const navigate = useNavigate();
 
     const validateComponent = element => {
         //If user is authorized show write and profile tabs on the header.
-        if (isAuthorized) return element;
+        if (user) return element;
         return false;
     };
 
@@ -47,7 +47,7 @@ const Header = () => {
                     </NavLink>
                 )}
                 <button onClick={e => handleAuthorization(e.target.innerText)}>
-                    {isAuthorized ? "Logout" : "Login"}
+                    {user ? "Logout" : "Login"}
                 </button>
             </div>
         </header>

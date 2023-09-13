@@ -6,7 +6,6 @@ const useFetch = config => {
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchData = async config => {
-        console.log("fetchData function called");
         setIsLoading(true);
         try {
             const response = await axiosInstance(config);

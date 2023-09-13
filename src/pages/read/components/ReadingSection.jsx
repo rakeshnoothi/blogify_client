@@ -6,7 +6,7 @@ import formatDate from "../../../utils/dateFormat";
 const ReadingSection = () => {
     const { id } = useParams();
     const { data: blogData, isLoading: isBlogLoading } = useFetch(
-        `/posts/${id}?populate[image]=true&populate[user][populate][profile_picture]=true`
+        `/posts/${id}?populate[likes]=true&populate[image]=true&populate[user][populate][profile_picture]=true`
     );
 
     if (isBlogLoading) return <div className="h-[744px]">Loading Blog....</div>;

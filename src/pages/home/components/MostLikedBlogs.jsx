@@ -1,4 +1,4 @@
-const MostPopularBlog = ({ postData }) => {
+const MostLikedBlogs = ({ postData }) => {
     const { title, overview, createdAt } = postData;
     return (
         <div className="space-y-2 box-shadow p-2 hover:cursor-pointer">
@@ -8,4 +8,4 @@ const MostPopularBlog = ({ postData }) => {
         </div>
     );
 };
-export default MostPopularBlog;
+export default MostLikedBlogs;

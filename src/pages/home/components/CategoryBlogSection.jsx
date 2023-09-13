@@ -1,6 +1,6 @@
 import BlogPost from "./BlogPost";
 import CategoryButton from "./CategoryButton";
-import MostPopularBlog from "./MostPopularBlog";
+import MostLikedBlogs from "./MostLikedBlogs";
 import useBlogsDataContext from "../../../hooks/useBlogsDataContext";
 import { useRef } from "react";
 
@@ -58,10 +58,7 @@ const CategoryBlogSection = () => {
                         topLikedBlogs.formattedTopLikedBlogs &&
                         topLikedBlogs.formattedTopLikedBlogs.map(post => {
                             return (
-                                <MostPopularBlog
-                                    postData={post}
-                                    key={post.id}
-                                />
+                                <MostLikedBlogs postData={post} key={post.id} />
                             );
                         })
                     )}
