@@ -35,6 +35,8 @@ const BlogLikeButton = ({ blogData }) => {
 
     const handleLike = async () => {
         if (!user) alert("Login to like the post");
+
+        //if user did not liked the post he can like
         if (!blogLikeInfo.isLiked) {
             const config = {
                 method: "post",
@@ -55,6 +57,8 @@ const BlogLikeButton = ({ blogData }) => {
             });
             return;
         }
+
+        // If user already liked the post clicking on the like button again removes the like from database and updates the ui.
         const config = {
             method: "delete",
             url: `/likes/${blogLikeInfo.blogLikeId}`,

@@ -1,15 +1,40 @@
 import BlogPost from "./BlogPost";
 import CategoryButton from "./CategoryButton";
-import MostLikedBlogs from "./MostLikedBlogs";
-import useBlogsDataContext from "../../../hooks/useBlogsDataContext";
+import TopLikedBlogs from "./TopLikedBlogs";
 import { useRef } from "react";
+import useFetch from "../../../hooks/useFetch";
+import makePostModel from "../../../utils/makePostModel";
 
 const buttonDisplayNames = ["Tech", "Food", "Travel", "Gaming"];
+const topLikedBlogsConfig = {
+    method: "get",
+    url: "/posts?pagination[pageSize]=3&sort[6]=like:desc&populate[image]=true",
+};
 
 const CategoryBlogSection = () => {
-    const { categoryBlogs } = useBlogsDataContext();
-    const { topLikedBlogs } = useBlogsDataContext();
     const activeCategory = useRef(null);
+    const {
+        data: fetchedCategoryBlogsData,
+        isLoading: blogPostIsloading,
+        fetchData,
+    } = useFetch();
+    const {
+        data: fetchedTopLikedBlogsData,
+        isLoading: topLikedBlogsIsLoading,
+    } = useFetch(topLikedBlogsConfig);
+
+    //format the fetched data from server.
+    const formattedCategoryBlogs =
+        fetchedCategoryBlogsData &&
+        fetchedCategoryBlogsData.data[0].attributes.posts.data.map(post => {
+            return makePostModel(post);
+        });
+
+    const formattedTopLikedBlogs =
+        fetchedTopLikedBlogsData &&
+        fetchedTopLikedBlogsData.data.map(post => {
+            return makePostModel(post);
+        });
 
     const fetchCategoryPosts = category => {
         //return if clicked on the same category button again.
@@ -19,7 +44,7 @@ const CategoryBlogSection = () => {
             method: "get",
             url: `/categories/?filters[category]=${category}&populate[posts][populate][image]=true`,
         };
-        return categoryBlogs.fetchData(config);
+        return fetchData(config);
     };
 
     return (
@@ -38,11 +63,11 @@ const CategoryBlogSection = () => {
             </div>
             <div className="flex justify-center space-x-4">
                 <div className="space-y-4 w-[341px] max-w-[904px] md:min-w-[653px] md:w-full">
-                    {categoryBlogs.blogPostsIsLoading ? (
+                    {blogPostIsloading ? (
                         <div>Loading Posts....</div>
                     ) : (
-                        categoryBlogs.formattedCategoryBlogs &&
-                        categoryBlogs.formattedCategoryBlogs.map(post => {
+                        formattedCategoryBlogs &&
+                        formattedCategoryBlogs.map(post => {
                             return <BlogPost key={post.id} postData={post} />;
                         })
                     )}
@@ -52,13 +77,13 @@ const CategoryBlogSection = () => {
                     <span className="font-bold text-xl block">
                         Top Liked posts
                     </span>
-                    {topLikedBlogs.topLikedBlogsIsLoadingg ? (
+                    {topLikedBlogsIsLoading ? (
                         <div>Loading posts....</div>
                     ) : (
-                        topLikedBlogs.formattedTopLikedBlogs &&
-                        topLikedBlogs.formattedTopLikedBlogs.map(post => {
+                        formattedTopLikedBlogs &&
+                        formattedTopLikedBlogs.map(post => {
                             return (
-                                <MostLikedBlogs postData={post} key={post.id} />
+                                <TopLikedBlogs postData={post} key={post.id} />
                             );
                         })
                     )}

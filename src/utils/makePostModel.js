@@ -8,10 +8,8 @@ const makePostModel = post => {
         createdAt: formatDate(postData.createdAt),
         title: postData.title,
         overview: postData.overview,
-        content: postData.content,
         imageUrl: postData.image.data.attributes.formats.small.url,
         like: postData.like,
-        comments: null,
     };
     return formattedPostModel;
 };

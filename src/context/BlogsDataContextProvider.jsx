@@ -3,7 +3,7 @@ import useFetch from "../hooks/useFetch";
 import makePostModel from "../utils/makePostModel";
 
 export const BlogsDataContext = createContext();
-const mostPopularBlogsConfig = {
+const topLikedBlogsConfig = {
     method: "get",
     url: "/posts?pagination[pageSize]=3&sort[6]=like:desc&populate[image]=true",
 };
@@ -18,7 +18,7 @@ const BlogsContextProvider = ({ children }) => {
     const {
         data: fetchedTopLikedBlogsData,
         isLoading: topLikedBlogsIsLoading,
-    } = useFetch(mostPopularBlogsConfig);
+    } = useFetch(topLikedBlogsConfig);
 
     const formattedTopLikedBlogs =
         fetchedTopLikedBlogsData &&

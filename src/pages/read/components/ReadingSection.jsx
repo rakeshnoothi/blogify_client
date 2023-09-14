@@ -2,12 +2,14 @@ import { useParams } from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
 import BlogLikeButton from "./BlogLikeButton";
 import formatDate from "../../../utils/dateFormat";
+import ReactMarkdown from "react-markdown";
 
 const ReadingSection = () => {
     const { id } = useParams();
     const { data: blogData, isLoading: isBlogLoading } = useFetch(
         `/posts/${id}?populate[likes]=true&populate[image]=true&populate[user][populate][profile_picture]=true`
     );
+    console.log(blogData);
 
     if (isBlogLoading) return <div className="h-[744px]">Loading Blog....</div>;
     if (!blogData) return <div>Nothing here...</div>;
@@ -41,7 +43,13 @@ const ReadingSection = () => {
                 <BlogLikeButton blogData={blogData} />
             </div>
             {/* reading content */}
-            <p>{blogData.data.attributes.content}</p>
+            <div className="w-full flex justify-center h-[500px]">
+                <img
+                    src={`http://localhost:1337${blogData.data.attributes.image.data.attributes.formats.small.url}`}
+                    alt="image here"
+                />
+            </div>
+            <ReactMarkdown>{blogData.data.attributes.content}</ReactMarkdown>
         </div>
     );
 };
