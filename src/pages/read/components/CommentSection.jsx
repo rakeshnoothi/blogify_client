@@ -5,13 +5,12 @@ import { useState } from "react";
 
 const CommentSection = () => {
     const { id } = useParams();
-    const [newComment, setNewComment] = useState(null);
+    const [newComment, setNewComment] = useState("");
     const { data: fetchedComments, isLoading: CommentsIsLoading } = useFetch(
-        `posts/${id}?populate[comments]=true`
+        `posts/${id}?populate[comments][populate][authenticated_user][populate][profile_picture]=true`
     );
-    // const { data: fetchedCommentorData, isLoading: commentorDataIsLoading } =
-    //     useFetch();
 
+    console.log("fetched comments", fetchedComments);
     const postNewComment = () => {};
 
     const commentsDataArr =

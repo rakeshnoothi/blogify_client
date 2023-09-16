@@ -23,6 +23,8 @@ const CategoryBlogSection = () => {
         isLoading: topLikedBlogsIsLoading,
     } = useFetch(topLikedBlogsConfig);
 
+    console.log("fetchcategoryblogs", fetchedCategoryBlogsData);
+
     //format the fetched data from server.
     const formattedCategoryBlogs =
         fetchedCategoryBlogsData &&
