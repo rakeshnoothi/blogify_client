@@ -1,34 +1,14 @@
-import useAuthContext from "../../../hooks/useAuthContext";
+import { useState } from "react";
 import formatDate from "../../../utils/dateFormat";
 import formatData from "../../../utils/formatData";
 
-// const EditCommentButton = ({ commentorId, currentUserId }) => {
-//     const commentAction = action => {
-//         if (action === "edit") {
-//         }
-//     };
-//     if (commentorId !== currentUserId) return null;
-//     return (
-//         <div className="flex flex-col gap-2">
-//             <button
-//                 className="bg-orange-500 text-white p-2"
-//                 onClick={() => commentAction("edit")}
-//             >
-//                 Edit comment
-//             </button>
+import CommentActionButtons from "./CommentActionButtons";
 
-//             <button
-//                 className="bg-orange-500 text-white p-2"
-//                 onClick={() => commentAction("delete")}
-//             >
-//                 Delete comment
-//             </button>
-//         </div>
-//     );
-// };
-
-const UserComment = ({ comment }) => {
-    // const { user } = useAuthContext();
+const UserComment = ({ comment, deleteComment }) => {
+    const [commentInput, setCommentInput] = useState(
+        comment.data.comment_content
+    );
+    const [isReadOnly, setIsReadOnly] = useState(true);
 
     const formatedUser = formatData.singleFormatData(
         comment.data.authenticated_user
@@ -57,14 +37,17 @@ const UserComment = ({ comment }) => {
                 </div>
                 <input
                     type="text"
-                    value={comment.data.comment_content}
-                    onChange={e => editComment(e)}
+                    value={commentInput}
+                    onChange={e => setCommentInput(e.target.value)}
+                    readOnly={isReadOnly}
                 />
             </div>
-            {/* <EditCommentButton
-                commentorId={comment.data.commentor_user_id}
-                currentUserId={user.user.id}
-            /> */}
+            <CommentActionButtons
+                comment={comment}
+                setIsReadOnly={setIsReadOnly}
+                commentInput={commentInput}
+                deleteComment={deleteComment}
+            />
         </div>
     );
 };

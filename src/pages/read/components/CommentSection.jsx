@@ -5,6 +5,7 @@ import { useState } from "react";
 import formatData from "../../../utils/formatData";
 import useAuthContext from "../../../hooks/useAuthContext";
 import axiosInstance from "../../../utils/api/axiosInstance";
+import postNewComment from "../utils/commentActions";
 
 const CommentSection = () => {
     const { id } = useParams();
@@ -20,26 +21,32 @@ const CommentSection = () => {
 
     console.log("rendered from comment section");
 
-    const postNewComment = async e => {
-        e.preventDefault();
+    const handlePostButton = async e => {
+        try {
+            await postNewComment(e, id, newComment, user);
+            updateComments(
+                `posts/${id}?populate[comments][populate][authenticated_user][populate][profile_picture]=true`
+            );
+            setNewComment("");
+        } catch (error) {
+            console.log("error occured", error);
+            alert("cannot post this time");
+        }
+    };
+
+    const deleteComment = async commentId => {
         const config = {
-            method: "post",
-            url: "/comments",
-            data: {
-                data: {
-                    post: id,
-                    comment_content: newComment,
-                    commentor_user_id: user.user.id,
-                    commentor_username: user.user.username,
-                    authenticated_user: user.user.id,
-                },
-            },
+            method: "delete",
+            url: `/comments/${commentId}`,
         };
-        await axiosInstance(config);
-        updateComments(
-            `posts/${id}?populate[comments][populate][authenticated_user][populate][profile_picture]=true`
-        );
-        setNewComment("");
+        try {
+            await axiosInstance(config);
+            updateComments(
+                `posts/${id}?populate[comments][populate][authenticated_user][populate][profile_picture]=true`
+            );
+        } catch (error) {
+            alert("sorry cannot delete your comment at this moment");
+        }
     };
 
     const formatedComments = formatData.manyFormatData(
@@ -58,7 +65,7 @@ const CommentSection = () => {
                 />
                 <button
                     className="bg-orange-500 text-white p-2"
-                    onClick={e => postNewComment(e)}
+                    onClick={e => handlePostButton(e)}
                 >
                     Post
                 </button>
@@ -68,7 +75,11 @@ const CommentSection = () => {
             ) : (
                 formatedComments &&
                 formatedComments.map(comment => (
-                    <UserComment comment={comment} key={comment.id} />
+                    <UserComment
+                        comment={comment}
+                        key={comment.id}
+                        deleteComment={deleteComment}
+                    />
                 ))
             )}
         </div>
