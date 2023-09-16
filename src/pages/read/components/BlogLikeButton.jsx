@@ -3,26 +3,22 @@ import useAuthContext from "../../../hooks/useAuthContext";
 import { useEffect, useState } from "react";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
-import { useParams } from "react-router-dom";
 
-const BlogLikeButton = ({ blogData }) => {
+const BlogLikeButton = ({ blog }) => {
     const { user } = useAuthContext();
-    const { id } = useParams();
     const [blogLikeInfo, setIsBlogLikeInfo] = useState({
         isLiked: false,
         blogLikeId: null,
         totalLikes: 0,
     });
 
-    console.log("from blog like button", blogData);
-
     useEffect(() => {
-        blogData.likes.data.find(like => {
+        blog.data.likes.data.find(like => {
             //if user is not authenticated.
             if (!user) {
                 setIsBlogLikeInfo({
                     ...blogLikeInfo,
-                    totalLikes: blogData.likes.data.length,
+                    totalLikes: blog.data.likes.data.length,
                 });
                 return;
             }
@@ -31,7 +27,7 @@ const BlogLikeButton = ({ blogData }) => {
                 setIsBlogLikeInfo({
                     isLiked: true,
                     blogLikeId: like.id,
-                    totalLikes: blogData.likes.data.length,
+                    totalLikes: blog.data.likes.data.length,
                 });
             }
         });
@@ -48,7 +44,7 @@ const BlogLikeButton = ({ blogData }) => {
                 data: {
                     data: {
                         user_id: user.user.id,
-                        post: id,
+                        post: blog.id,
                     },
                 },
             };

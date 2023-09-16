@@ -2,6 +2,7 @@ import UserComment from "./UserComment";
 import useFetch from "../../../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
+import formatData from "../../../utils/formatData";
 
 const CommentSection = () => {
     const { id } = useParams();
@@ -10,13 +11,10 @@ const CommentSection = () => {
         `posts/${id}?populate[comments][populate][authenticated_user][populate][profile_picture]=true`
     );
 
-    console.log("fetched comments", fetchedComments);
     const postNewComment = () => {};
-
-    const commentsDataArr =
-        fetchedComments && fetchedComments.data.attributes.comments.data;
-    console.log(fetchedComments);
-    console.log(commentsDataArr);
+    const formatedComments = formatData.manyFormatData(
+        fetchedComments && fetchedComments.data.attributes.comments
+    );
 
     return (
         <div className="flex w-full flex-col space-y-4">
@@ -38,12 +36,9 @@ const CommentSection = () => {
             {CommentsIsLoading ? (
                 <span>Loading comments.....</span>
             ) : (
-                commentsDataArr &&
-                commentsDataArr.map(comment => (
-                    <UserComment
-                        comment={comment.attributes}
-                        key={comment.id}
-                    />
+                formatedComments &&
+                formatedComments.map(comment => (
+                    <UserComment comment={comment} key={comment.id} />
                 ))
             )}
         </div>

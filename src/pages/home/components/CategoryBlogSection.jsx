@@ -3,7 +3,7 @@ import CategoryButton from "./CategoryButton";
 import TopLikedBlogs from "./TopLikedBlogs";
 import { useRef } from "react";
 import useFetch from "../../../hooks/useFetch";
-import makePostModel from "../../../utils/makePostModel";
+import formatData from "../../../utils/formatData";
 
 const buttonDisplayNames = ["Tech", "Food", "Travel", "Gaming"];
 const topLikedBlogsConfig = {
@@ -14,7 +14,7 @@ const topLikedBlogsConfig = {
 const CategoryBlogSection = () => {
     const activeCategory = useRef(null);
     const {
-        data: fetchedCategoryBlogsData,
+        data: fetchedCategoryData,
         isLoading: blogPostIsloading,
         fetchData,
     } = useFetch();
@@ -23,22 +23,15 @@ const CategoryBlogSection = () => {
         isLoading: topLikedBlogsIsLoading,
     } = useFetch(topLikedBlogsConfig);
 
-    console.log("fetchcategoryblogs", fetchedCategoryBlogsData);
+    const formattedCategory = formatData.manyFormatData(fetchedCategoryData);
+    const formatedCategoryBlogs = formatData.manyFormatData(
+        formattedCategory && formattedCategory[0].data.posts
+    );
+    const formatedTopLikedBlogs = formatData.manyFormatData(
+        fetchedTopLikedBlogsData
+    );
 
-    //format the fetched data from server.
-    const formattedCategoryBlogs =
-        fetchedCategoryBlogsData &&
-        fetchedCategoryBlogsData.data[0].attributes.posts.data.map(post => {
-            return makePostModel(post);
-        });
-
-    const formattedTopLikedBlogs =
-        fetchedTopLikedBlogsData &&
-        fetchedTopLikedBlogsData.data.map(post => {
-            return makePostModel(post);
-        });
-
-    const fetchCategoryPosts = category => {
+    const fetchCategoryBlogs = category => {
         //return if clicked on the same category button again.
         if (activeCategory.current === category) return;
         activeCategory.current = category;
@@ -57,7 +50,7 @@ const CategoryBlogSection = () => {
                         <CategoryButton
                             key={buttonDisplayName}
                             displayName={buttonDisplayName}
-                            fetchCategoryPosts={fetchCategoryPosts}
+                            fetchCategoryPosts={fetchCategoryBlogs}
                             activeCategory={activeCategory}
                         />
                     ))}
@@ -68,9 +61,9 @@ const CategoryBlogSection = () => {
                     {blogPostIsloading ? (
                         <div>Loading Posts....</div>
                     ) : (
-                        formattedCategoryBlogs &&
-                        formattedCategoryBlogs.map(post => {
-                            return <BlogPost key={post.id} postData={post} />;
+                        formatedCategoryBlogs &&
+                        formatedCategoryBlogs.map(blog => {
+                            return <BlogPost key={blog.id} blog={blog} />;
                         })
                     )}
                 </div>
@@ -82,11 +75,9 @@ const CategoryBlogSection = () => {
                     {topLikedBlogsIsLoading ? (
                         <div>Loading posts....</div>
                     ) : (
-                        formattedTopLikedBlogs &&
-                        formattedTopLikedBlogs.map(post => {
-                            return (
-                                <TopLikedBlogs postData={post} key={post.id} />
-                            );
+                        formatedTopLikedBlogs &&
+                        formatedTopLikedBlogs.map(blog => {
+                            return <TopLikedBlogs blog={blog} key={blog.id} />;
                         })
                     )}
                 </div>

@@ -5,8 +5,6 @@ const emailRegex = new RegExp(
 const passRegex = new RegExp(/^[A-Za-z]\w{7,14}$/);
 
 const validateRegisterationForm = registerationData => {
-    console.log("registerationData", registerationData);
-
     for (let key in registerationData) {
         if (registerationData[key] === "") return false;
     }
