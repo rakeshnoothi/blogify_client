@@ -3,15 +3,45 @@ import useFetch from "../../../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import formatData from "../../../utils/formatData";
+import useAuthContext from "../../../hooks/useAuthContext";
+import axiosInstance from "../../../utils/api/axiosInstance";
 
 const CommentSection = () => {
     const { id } = useParams();
+    const { user } = useAuthContext();
     const [newComment, setNewComment] = useState("");
-    const { data: fetchedComments, isLoading: CommentsIsLoading } = useFetch(
+    const {
+        data: fetchedComments,
+        isLoading: CommentsIsLoading,
+        fetchData: updateComments,
+    } = useFetch(
         `posts/${id}?populate[comments][populate][authenticated_user][populate][profile_picture]=true`
     );
 
-    const postNewComment = () => {};
+    console.log("rendered from comment section");
+
+    const postNewComment = async e => {
+        e.preventDefault();
+        const config = {
+            method: "post",
+            url: "/comments",
+            data: {
+                data: {
+                    post: id,
+                    comment_content: newComment,
+                    commentor_user_id: user.user.id,
+                    commentor_username: user.user.username,
+                    authenticated_user: user.user.id,
+                },
+            },
+        };
+        await axiosInstance(config);
+        updateComments(
+            `posts/${id}?populate[comments][populate][authenticated_user][populate][profile_picture]=true`
+        );
+        setNewComment("");
+    };
+
     const formatedComments = formatData.manyFormatData(
         fetchedComments && fetchedComments.data.attributes.comments
     );
@@ -28,7 +58,7 @@ const CommentSection = () => {
                 />
                 <button
                     className="bg-orange-500 text-white p-2"
-                    onClick={() => postNewComment()}
+                    onClick={e => postNewComment(e)}
                 >
                     Post
                 </button>

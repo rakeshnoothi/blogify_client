@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../utils/api/axiosInstance";
 
-const useFetch = config => {
+const useFetch = (config, ...dep) => {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -21,7 +21,7 @@ const useFetch = config => {
         if (config) {
             fetchData(config);
         }
-    }, []);
+    }, dep);
 
     return {
         data,
