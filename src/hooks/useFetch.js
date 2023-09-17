@@ -13,6 +13,7 @@ const useFetch = (config, ...dep) => {
         } catch (error) {
             console.log(error);
         } finally {
+            console.log("ran first");
             setIsLoading(false);
         }
     };

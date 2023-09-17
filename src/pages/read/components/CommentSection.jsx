@@ -1,11 +1,11 @@
 import UserComment from "./UserComment";
-import useFetch from "../../../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import formatData from "../../../utils/formatData";
 import useAuthContext from "../../../hooks/useAuthContext";
-import axiosInstance from "../../../utils/api/axiosInstance";
-import postNewComment from "../utils/commentActions";
+import useCommentAction from "../../../hooks/useCommentAction";
+
+console.log("from outside the component");
 
 const CommentSection = () => {
     const { id } = useParams();
@@ -14,39 +14,21 @@ const CommentSection = () => {
     const {
         data: fetchedComments,
         isLoading: CommentsIsLoading,
-        fetchData: updateComments,
-    } = useFetch(
+        requestServer,
+    } = useCommentAction(
         `posts/${id}?populate[comments][populate][authenticated_user][populate][profile_picture]=true`
     );
 
     console.log("rendered from comment section");
 
-    const handlePostButton = async e => {
-        try {
-            await postNewComment(e, id, newComment, user);
-            updateComments(
-                `posts/${id}?populate[comments][populate][authenticated_user][populate][profile_picture]=true`
-            );
-            setNewComment("");
-        } catch (error) {
-            console.log("error occured", error);
-            alert("cannot post this time");
-        }
+    const handlePostCommentButton = async e => {
+        e.preventDefault();
+        await requestServer.postNewComment(id, newComment, user);
+        setNewComment("");
     };
 
-    const deleteComment = async commentId => {
-        const config = {
-            method: "delete",
-            url: `/comments/${commentId}`,
-        };
-        try {
-            await axiosInstance(config);
-            updateComments(
-                `posts/${id}?populate[comments][populate][authenticated_user][populate][profile_picture]=true`
-            );
-        } catch (error) {
-            alert("sorry cannot delete your comment at this moment");
-        }
+    const handlDeletecommentButton = async commentId => {
+        requestServer.deleteComment(commentId, id);
     };
 
     const formatedComments = formatData.manyFormatData(
@@ -65,7 +47,7 @@ const CommentSection = () => {
                 />
                 <button
                     className="bg-orange-500 text-white p-2"
-                    onClick={e => handlePostButton(e)}
+                    onClick={e => handlePostCommentButton(e)}
                 >
                     Post
                 </button>
@@ -78,7 +60,7 @@ const CommentSection = () => {
                     <UserComment
                         comment={comment}
                         key={comment.id}
-                        deleteComment={deleteComment}
+                        handlDeletecommentButton={handlDeletecommentButton}
                     />
                 ))
             )}

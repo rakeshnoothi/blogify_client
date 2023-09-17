@@ -1,10 +1,9 @@
 import { useState } from "react";
 import formatDate from "../../../utils/dateFormat";
 import formatData from "../../../utils/formatData";
-
 import CommentActionButtons from "./CommentActionButtons";
 
-const UserComment = ({ comment, deleteComment }) => {
+const UserComment = ({ comment, handlDeletecommentButton }) => {
     const [commentInput, setCommentInput] = useState(
         comment.data.comment_content
     );
@@ -46,7 +45,7 @@ const UserComment = ({ comment, deleteComment }) => {
                 comment={comment}
                 setIsReadOnly={setIsReadOnly}
                 commentInput={commentInput}
-                deleteComment={deleteComment}
+                handlDeletecommentButton={handlDeletecommentButton}
             />
         </div>
     );
