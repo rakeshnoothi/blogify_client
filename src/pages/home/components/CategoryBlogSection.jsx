@@ -12,12 +12,14 @@ const topLikedBlogsConfig = {
 };
 
 const CategoryBlogSection = () => {
-    const activeCategory = useRef(null);
+    const activeCategory = useRef("Tech");
     const {
         data: fetchedCategoryData,
         isLoading: blogPostIsloading,
         fetchData,
-    } = useFetch();
+    } = useFetch(
+        `/categories/?filters[category]=${activeCategory.current}&populate[posts][populate][image]=true`
+    );
     const {
         data: fetchedTopLikedBlogsData,
         isLoading: topLikedBlogsIsLoading,

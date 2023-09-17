@@ -1,10 +1,31 @@
+import { useNavigate } from "react-router-dom";
+import useFetch from "../../../hooks/useFetch";
+import formatData from "../../../utils/formatData";
+
 const BannerPost = () => {
-    // https://images.unsplash.com/photo-1645943020355-305df166473d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80
+    const { data: featuredBlog, isLoading: featuredBlogIsLoading } = useFetch(
+        `/posts/?filters[is_featured]=TRUE&populate[image]=true`
+    );
+    const navigate = useNavigate();
+
+    const formattedFeaturedBlog =
+        formatData.manyFormatData(featuredBlog) &&
+        formatData.manyFormatData(featuredBlog)[0];
+
+    const redirectToReadingPage = () => {
+        navigate(`/read/${formattedFeaturedBlog.id}`);
+    };
+
+    if (featuredBlogIsLoading) return <div>Blog is loading......</div>;
+    if (!featuredBlog) return <div>nothing....</div>;
     return (
         <div className="max-h-max py-4 flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0 lg:h-80 lg:p-4">
             <div className="w-[340px] h-[287px] bg-red-400 mx-auto lg:w-[488.64px]">
                 <img
-                    src=""
+                    src={`${import.meta.env.VITE_STRAPI_IMAGE_BASE_URL}${
+                        formattedFeaturedBlog.data.image.data.attributes.formats
+                            .small.url
+                    }`}
                     alt="banner image"
                     className="h-full w-full object-cover"
                 />
@@ -13,17 +34,14 @@ const BannerPost = () => {
                 <div className="space-y-4 lg:space-y-8">
                     <div className="space-y-2">
                         <h1 className="text-2xl font-bold">
-                            Title of the bannerPost bladhsfh sdhsdfjskdj
+                            {formattedFeaturedBlog.data.title}
                         </h1>
-                        <p>
-                            k Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Reprehenderit nostrum distinctio maiores
-                            consectetur temporibus officiis itaque delectus?
-                            Vel, ex cumque. Debitis optio officia adipisci nobis
-                            harum, sed ipsam velit eius!
-                        </p>
+                        <p>{formattedFeaturedBlog.data.overview}</p>
                     </div>
-                    <button className="p-4 rounded-md border border-black text-black hover:bg-orange-600 hover:text-white">
+                    <button
+                        className="p-4 rounded-md border border-black text-black hover:bg-orange-600 hover:text-white"
+                        onClick={redirectToReadingPage}
+                    >
                         Read now
                     </button>
                 </div>
