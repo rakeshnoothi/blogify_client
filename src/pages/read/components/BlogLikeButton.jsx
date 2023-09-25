@@ -34,7 +34,10 @@ const BlogLikeButton = ({ blog }) => {
     }, []);
 
     const handleLike = async () => {
-        if (!user) alert("Login to like the post");
+        if (!user) {
+            alert("Login to like the post");
+            return;
+        }
 
         //if user did not liked the post he can like
         if (!blogLikeInfo.isLiked) {

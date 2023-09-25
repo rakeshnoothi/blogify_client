@@ -39,7 +39,7 @@ const CommentActionButtons = ({
             alert("sorry cannot update your comment at this moment");
         }
     };
-
+    if (user.user === undefined) return;
     if (comment.data.commentor_user_id !== user.user.id) return null;
     return (
         <div className="flex flex-col gap-2">

@@ -9,9 +9,11 @@ const BlogPost = ({ blog }) => {
 
     return (
         <div className="h-[700px]  p-2 flex flex-col space-y-2 box-shadow md:flex-row  md:h-80 md:space-x-2">
-            <div className="min-w-[18rem] h-[325px] md:max-h-[304px] bg-red-500">
+            <div className="min-w-[18rem] h-[325px] md:max-h-[288px] bg-red-500">
                 <img
-                    src={`http://localhost:1337${blog.data.image.data.attributes.formats.small.url}`}
+                    src={`${import.meta.env.VITE_STRAPI_IMAGE_BASE_URL}${
+                        blog.data.image.data.attributes.formats.small.url
+                    }`}
                     alt="banner image"
                     className="h-full w-full object-cover"
                 />

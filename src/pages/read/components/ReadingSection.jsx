@@ -42,7 +42,7 @@ const ReadingSection = () => {
                 <BlogLikeButton blog={blog} />
             </div>
             {/* reading content */}
-            <div className="flex justify-center">
+            <div className="flex justify-center h-[500px]">
                 <img
                     src={`http://localhost:1337${blog.data.image.data.attributes.formats.small.url}`}
                     alt="image here"

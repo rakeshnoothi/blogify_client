@@ -23,6 +23,10 @@ const CommentSection = () => {
 
     const handlePostCommentButton = async e => {
         e.preventDefault();
+        if (user.user === undefined) {
+            alert("Please login to comment");
+            return;
+        }
         await requestServer.postNewComment(id, newComment, user);
         setNewComment("");
     };

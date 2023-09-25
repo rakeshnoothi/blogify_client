@@ -8,7 +8,7 @@ const Home = () => {
                 <span className="font-semibold text-orange-600">
                     Discover stories{" "}
                 </span>
-                and much more! brother and ok bro
+                and much more!
             </p>
             <BannerPost />
             <p className="text-xl font-semibold">Categories</p>

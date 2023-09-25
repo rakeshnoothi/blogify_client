@@ -25,6 +25,8 @@ const CategoryBlogSection = () => {
         isLoading: topLikedBlogsIsLoading,
     } = useFetch(topLikedBlogsConfig);
 
+    const controller = new AbortController();
+
     const formattedCategory = formatData.manyFormatData(fetchedCategoryData);
     const formatedCategoryBlogs = formatData.manyFormatData(
         formattedCategory && formattedCategory[0].data.posts
@@ -34,6 +36,7 @@ const CategoryBlogSection = () => {
     );
 
     const fetchCategoryBlogs = category => {
+        controller.abort();
         //return if clicked on the same category button again.
         if (activeCategory.current === category) return;
         activeCategory.current = category;

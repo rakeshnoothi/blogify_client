@@ -9,8 +9,7 @@ const BannerPost = () => {
     const navigate = useNavigate();
 
     const formattedFeaturedBlog =
-        formatData.manyFormatData(featuredBlog) &&
-        formatData.manyFormatData(featuredBlog)[0];
+        featuredBlog && formatData.manyFormatData(featuredBlog)[0];
 
     const redirectToReadingPage = () => {
         navigate(`/read/${formattedFeaturedBlog.id}`);
